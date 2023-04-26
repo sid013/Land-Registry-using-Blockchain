@@ -62,7 +62,7 @@ const Explore = (props) => {
 
   const requestForBuy = async () =>{
     await contract.RequestForBuy(explore.state, explore.district, explore.city, explore.surveyNo, {
-      from: account
+      from: account   , value: 2*10**18
     })
 
     setDidIRequested(true);

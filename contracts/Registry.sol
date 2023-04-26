@@ -156,7 +156,7 @@ contract Registry{
 
 
     // User_2: Request for buy  **ownerAddress & index = arguements** 
-    function RequestForBuy(string memory _state, string memory _district, string memory _city, uint _surveyNo) external{
+    function RequestForBuy(string memory _state, string memory _district, string memory _city, uint _surveyNo) external payable{
 
         LandDetails storage thisLandDetail = landDetalsMap[_state][_district][_city][_surveyNo];
         require(thisLandDetail.markAvailable == true, "This property is NOT marked for sale!");
@@ -179,7 +179,7 @@ contract Registry{
 
 
     // User_1: Accept the buy request; sell.
-    function AcceptRequest(uint _index, uint _reqNo) external{
+    function AcceptRequest(uint _index, uint _reqNo) external payable{
 
         uint _surveyNo = ownerMapsProperty[msg.sender][_index].surveyNumber;
         string memory _state = ownerMapsProperty[msg.sender][_index].state; 
@@ -206,7 +206,7 @@ contract Registry{
 
         // deleting property from user_1's ownerMapsProperty 
         delete ownerMapsProperty[msg.sender][_index];
-
+	payable(msg.sender).transfer(2 ether) ;
         // adding ownerMapsProperty for newOwner
         uint newOwnerTotProp = userProfile[newOwner].totalIndices;
         OwnerOwns storage newOwnerOwns = ownerMapsProperty[newOwner][newOwnerTotProp];
@@ -215,6 +215,7 @@ contract Registry{
         newOwnerOwns.state = _state;
         newOwnerOwns.district = _district;
         newOwnerOwns.city = _city;
+        
 
         landDetalsMap[_state][_district][_city][_surveyNo].index = newOwnerTotProp;
 
